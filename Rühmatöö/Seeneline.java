@@ -42,6 +42,14 @@ public class Seeneline {
         }
     }
 
+    public double korviVäärtus(Seen[] seenekorv) {
+        double summa = 0;
+        for (Seen seen : seenekorv) {
+            summa= summa + seen.getVäärtus();
+        }
+        return summa;
+    }
+
     //Get-id
     public String getNimi() {
         return this.nimi.substring(0,1).toUpperCase() + this.nimi.substring(1).toLowerCase();

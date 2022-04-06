@@ -1,0 +1,5 @@
+Sirmik;peab kupatama;1.0
+Pilvik;ei pea kupatama;2.0
+Kärbseseen;mürgine;-1.0
+Kevadkogrits;mürgine;-1.0
+Kukeseen;ei pea kupatama;3.0

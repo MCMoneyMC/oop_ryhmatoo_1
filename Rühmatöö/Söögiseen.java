@@ -1,25 +1,30 @@
 public class Söögiseen extends Seen {
 
-    private boolean vajabKupatamist;
+    private String vajabKupatamist;
     private boolean onUssitanud;
 
     //Konstruktor
-    public Söögiseen(String nimi, double pikkus_cm, double kübaraLäbimõõt_cm, boolean vajabKupatamist, boolean onUssitanud) {
-        super(nimi, pikkus_cm, kübaraLäbimõõt_cm);
+    public Söögiseen(String nimi, double pikkus_cm, double kübaraLäbimõõt_cm, double väärtus, String vajabKupatamist, boolean onUssitanud) {
+        super(nimi, pikkus_cm, kübaraLäbimõõt_cm,väärtus);
         this.vajabKupatamist = vajabKupatamist;
         this.onUssitanud = onUssitanud;
     }
 
     //Get-id
     public boolean kasVajabKupatamist() {
-        return vajabKupatamist;
+        if (vajabKupatamist.equals("ei pea kupatama")){
+            return false;
+        }
+        return true;
     }
+
+    //randoomselt valitakse, kas see on ussitanud või mitte
     public boolean kasOnUssitanud(){
-        return this.onUssitanud;
+        return Math.random() < 0.3;
     }
 
     //Set-id
-    public void setVajabKupatamist(boolean vajabKupatamist) {
+    public void setVajabKupatamist(String vajabKupatamist) {
         this.vajabKupatamist = vajabKupatamist;
     }
     public void setOnUssitanud(boolean onUssitanud) {
@@ -52,8 +57,9 @@ public class Söögiseen extends Seen {
             ussitamine = "ussitanud ";
         }
         //Uurin, kas on tarvis kupatada, või mitte
+        // midagi ei pea kupatama, kui seda eksklusiivselt ei öelda
         String kupatamine  = "ei ole";
-        if(this.vajabKupatamist){
+        if(kasVajabKupatamist()){
             kupatamine = "on";
         }
         //Lisan vahele, kas on ussitanud, täpsustan lõpus, et tegu on söögiseenega ning kas vajab kupatamist.

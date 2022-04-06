@@ -1,13 +1,15 @@
-abstract public class Seen implements Comparable<Seen>{
+abstract class Seen implements Comparable<Seen> {
     private String nimi;
     private double pikkus;
     private double kübaraLäbimõõt;
+    private double väärtus;
 
     //Konstruktor
-    public Seen(String nimi, double pikkus_cm, double kübaraLäbimõõt_cm){
+    public Seen(String nimi, double pikkus, double kübaraLäbimõõt, double väärtus) {
         this.nimi = nimi;
-        this.pikkus = pikkus_cm;
-        this.kübaraLäbimõõt = kübaraLäbimõõt_cm;
+        this.pikkus = Math.round(Math.random()*29.0+1.0);
+        this.kübaraLäbimõõt = Math.round(Math.random()*14.0+1.0);;
+        this.väärtus = väärtus;
     }
 
     //Korjamise otsuse tegemise meetod
@@ -23,6 +25,9 @@ abstract public class Seen implements Comparable<Seen>{
     public double getPikkus() {
         return pikkus;
     }
+    public double getVäärtus() {
+        return väärtus;
+    }
 
     //Set-id
     public void setNimi(String nimi) {
@@ -36,18 +41,16 @@ abstract public class Seen implements Comparable<Seen>{
     }
 
     //Võrdlemine
-    //Järjestab seened korvis vastavalt nime ning kaalutud suuruse baasil baasil
+    //Järjestab seened korvis vastavalt väärtusele
     @Override
     public int compareTo(Seen o) {
-        double kaalutudSuurus1 = this.getPikkus() * 0.6 + this.getKübaraLäbimõõt() * 0.4;
-        double kaalutudSuurus2 = o.getPikkus() * 0.6 + o.getKübaraLäbimõõt() * 0.4;
 
-        if(kaalutudSuurus1 < kaalutudSuurus2){
-            return 1 + this.getNimi().compareTo(o.getNimi());
-        }else if(kaalutudSuurus1 > kaalutudSuurus2){
-            return this.getNimi().compareTo(o.getNimi()) - 1;
+        if(väärtus < o.väärtus){
+            return 1 /*+ this.getNimi().compareTo(o.getNimi())*/;
+        }else if(väärtus > o.väärtus){
+            return -1 /*this.getNimi().compareTo(o.getNimi()) - 1*/;
         }else{
-            return this.getNimi().compareTo(o.getNimi());
+            return 0 /*this.getNimi().compareTo(o.getNimi())*/;
         }
     }
 
@@ -56,6 +59,8 @@ abstract public class Seen implements Comparable<Seen>{
     @Override
     public String toString() {
         return "See " + this.nimi + " on " + this.pikkus + "cm pikk " +
-                "ning " + this.kübaraLäbimõõt + "cm suuruse kübaraga.";
+                "ning " + this.kübaraLäbimõõt + "cm suuruse kübaraga." +
+                "Selle seene väärtus on " + this.väärtus + " münti. ";
     }
 }
+
