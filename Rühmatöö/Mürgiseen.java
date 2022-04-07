@@ -1,8 +1,8 @@
 public class Mürgiseen extends Seen {
 
     //Konstruktor
-    public Mürgiseen(String nimi, double pikkus_cm, double kübaraLäbimõõt_cm, double väärtus) {
-        super(nimi, pikkus_cm, kübaraLäbimõõt_cm,väärtus);
+    public Mürgiseen(String nimi, double väärtus) {
+        super(nimi, väärtus);
 
     }
 

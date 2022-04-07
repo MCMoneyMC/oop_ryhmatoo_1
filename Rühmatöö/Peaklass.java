@@ -1,4 +1,5 @@
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,58 +8,52 @@ import java.util.Scanner;
 public class Peaklass {
 
     //võtame seente info failist
-    public static List[] seenteInfo (String failiNimi) throws Exception {
-        List<Seen> kõikSöögiseened = new ArrayList<>();
-        List<Seen> kõikMürgiseened = new ArrayList<>();
+    public static List <String[]> seenteInfo (String failiNimi) throws Exception {
+        List<String[]> info = new ArrayList<>();
         File fail = new File(failiNimi);
-        try (Scanner failiScan = new Scanner(fail, "UTF-8")) {
+        try (Scanner failiScan = new Scanner(fail, StandardCharsets.UTF_8)) {
             while (failiScan.hasNextLine()) {
                 String rida = failiScan.nextLine();
                 String[] osadeks = rida.split(";");
-                if (osadeks[1].equals("mürgine")) {
-                    kõikMürgiseened.add(new Mürgiseen(osadeks[0], 0, 0, Double.parseDouble(osadeks[2])));
-                } else {
-                    kõikSöögiseened.add(new Söögiseen(osadeks[0], 0, 0, Double.parseDouble(osadeks[2]), osadeks[1], false));
-                }
+                info.add(osadeks);
             }
         }
-        // kuna ma tegin 2 erinevat listi, sest neid on vaja hiljem eraldi kasutada,
-        // ja funktioon lubab väljastada ainult ühe listi, siis me tegime ühe suurema listi
-        // kus sees on 2 väiksemat listi
-        List[] inception = {kõikMürgiseened, kõikSöögiseened};
-        return inception;
+        return info;
     }
 
     //Meetod, kus genereeritakse 3 uut seent
-    public static Seen[] looUuedSeened(List[] inception){
+    public static Seen[] looUuedSeened(List<String[]>[] inception){
 
-        // pakime meie koondlisti lasti kasutatavateks listideks
-        List<Seen> kõikMürgiseened = inception[0];
-        List<Seen> kõikSöögiseened = inception[1];
+        //Pakime meie massiivi lahti kasutatavateks listideks
+        List<String[]> kõikMürgiseened = inception[0];
+        List<String[]> kõikSöögiseened = inception[1];
 
-        // loome 3 uut seent
+        //Loome 3 uut seent
         Seen[] out = new Seen[3];
         for(int i = 0; i < 3; i++){
 
-            //!!
-            //Luua funktsioon mis loeb teksti failist seene nime,
-            //ning söögiseene korral ka kas teda on tarvis kupatada.
-            //!!
-            //DONEZO
-
             //Algul genereeritakse suvaline väärtus, mille põhjal otsustatakse, kas tegu on söögi- või mürgiseenega.
-            //Seejärel genereeritakse seenele suvaline pikkus ning läbimõõt poollõikudes [1, 30) ja [1, 15) vastavalt.
-            //Samuti otsustatakse, kas see seen oleks ussitanud, kui valiti söögiseen.
-            //Seened luuakse eelnevalt genereeritud parameetritega, ning lisatakse seente massiivi
-            double suvalineVäärtus = Math.random();
+            //Seejärel genereeritakse uued seened, failist loetud informatsiooni põhjal.
+            //Samuti otsustatakse, kas see seen on ussitanud, kui valiti söögiseen.
+            //Seened luuakse genereeritud parameetritega, ning lisatakse seente massiivi.
 
-            if(suvalineVäärtus < 0.35){
+            if(Math.random() < 0.35){
                 Collections.shuffle(kõikSöögiseened);
-                Söögiseen temp = (Söögiseen) kõikSöögiseened.get(0);
+                String[] info = kõikSöögiseened.get(0);
+
+                Söögiseen temp = new Söögiseen(info[0], Double.parseDouble(info[2]), info[1].equals("peab"));
+
+                //Varieerib igal väljakutsel ussitamise kohta uue tõeväärtuse ning kui on ussitanud kaob seene väärtus
+                temp.setOnUssitanud(Math.random() < 0.3);
+                if (temp.kasOnUssitanud()){
+                    temp.setVäärtus(0);
+                }
+
                 out[i] = temp;
             }else{
                 Collections.shuffle(kõikMürgiseened);
-                Mürgiseen temp = (Mürgiseen) kõikMürgiseened.get(0);
+                String[] info = kõikMürgiseened.get(0);
+                Mürgiseen temp = new Mürgiseen(info[0], Double.parseDouble(info[1]));
                 out[i] = temp;
             }
         }
@@ -72,7 +67,9 @@ public class Peaklass {
         int otsus = 1;
 
         // loeme info failist sisse
-        List[] inception = seenteInfo("seened.txt");
+        List<String[]> söögiseenteInfo = seenteInfo("soogiseened.txt");
+        List<String[]> mürgiseenteInfo = seenteInfo("murgiseened.txt");
+        List<String[]>[] seenteInfo = new List[]{mürgiseenteInfo, söögiseenteInfo};
 
         //Samuti moodustan tühja sõne, mis saab olema seenelise nimi.
         // Algul on ta tühi, et saaks alustada nime küsimise tsükkel,
@@ -81,11 +78,13 @@ public class Peaklass {
 
         // väike sissejuhatus mängijale, mis toimuma hakkab
         System.out.println(
-                "\t*** Seenele ***\n" +
-                        " ---------------------------------------- \n" +
-                        "Ühel päeval ärkasid ja avastasid, et sinu metsas kasvab \n" +
-                        "väga palju seeni. Otsustasid, et proovid õnne nendega \n" +
-                        "rikkaks saada ja lähedki metsa seenele. \n");
+                """
+                        \t*** Seenele ***
+                         ----------------------------------------\s
+                        Ühel päeval ärkasid ja avastasid, et sinu metsas kasvab\s
+                        väga palju seeni. Otsustasid, et proovid õnne nendega\s
+                        rikkaks saada ja lähedki metsa seenele.\s
+                        """);
 
         //Scanner objekt scan hakkab sisendeid võtma.
         Scanner scan = new Scanner(System.in);
@@ -102,10 +101,10 @@ public class Peaklass {
         Seeneline korjaja = new Seeneline(seeneliseNimi, seeneliseLaiskus);
 
         //Moodustan ka tühja seente massiivi seened, kuhu tekivad genereeritud seened.
-        Seen[] seened = {};
+        Seen[] seened;
 
         while (otsus != 0) {
-            seened = looUuedSeened(inception);
+            seened = looUuedSeened(seenteInfo);
             //System.out.println(Arrays.toString(seened));
             System.out.println("Seenelisel on ees kolm seent, vali neist üks, " +
                     "kirjutades 1, 2 või 3, ja liikuge edasi. \n" +
@@ -135,11 +134,13 @@ public class Peaklass {
         System.out.println(korjaja.getNimi() + " seenekorv: ");
         korjaja.väljastaKorjatudSeened();
 
-        System.out.println("\n Nüüd kus seened on korjatud, on sul 2 valikut, \n" +
-                " kas oma korv tervelt maha müüa või müüa kõige väärtuslikum \n" +
-                "seen sealt, mille valid? \n" +
-                " - müü terve korv \n" +
-                " - müü kalleim seen \n ");
+        System.out.println("""
+                 Nüüd kus seened on korjatud, on sul 2 valikut,\s
+                 kas oma korv tervelt maha müüa või müüa kõige väärtuslikum\s
+                seen sealt, mille valid?\s
+                 - müü terve korv\s
+                 - müü kalleim seen\s
+                \s""");
 
         String valik = "";
 
@@ -148,9 +149,10 @@ public class Peaklass {
             valik = scan.nextLine();
 
             if (valik.equals("müü terve korv")) {
-                System.out.println("Said tuluks " + korjaja.korviVäärtus(seened));
+                System.out.println("Said tuluks " + korjaja.korviVäärtus(korjaja.getSeenekorv()) + " münti.");
             } else if (valik.equals(("müü kalleim seen"))) {
-                System.out.println("Said tuluks " + seened[0].getVäärtus());
+                System.out.println("Sinu kalleim seen oli " + korjaja.getSeenekorv().get(0).getNimi() + " ja see oli väärt " +
+                        korjaja.getSeenekorv().get(0).getVäärtus() + " münti.");
             } else {
                 System.out.println("tee üks valik");
             }

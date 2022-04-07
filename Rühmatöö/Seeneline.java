@@ -42,10 +42,10 @@ public class Seeneline {
         }
     }
 
-    public double korviVäärtus(Seen[] seenekorv) {
+    public double korviVäärtus(List<Seen> seenekorv) {
         double summa = 0;
         for (Seen seen : seenekorv) {
-            summa= summa + seen.getVäärtus();
+            summa += seen.getVäärtus();
         }
         return summa;
     }

@@ -1,14 +1,14 @@
 abstract class Seen implements Comparable<Seen> {
     private String nimi;
-    private double pikkus;
-    private double kübaraLäbimõõt;
+    private int pikkus;
+    private int kübaraLäbimõõt;
     private double väärtus;
 
     //Konstruktor
-    public Seen(String nimi, double pikkus, double kübaraLäbimõõt, double väärtus) {
+    public Seen(String nimi, double väärtus) {
         this.nimi = nimi;
-        this.pikkus = Math.round(Math.random()*29.0+1.0);
-        this.kübaraLäbimõõt = Math.round(Math.random()*14.0+1.0);;
+        this.pikkus = (int) Math.round(Math.random()*29.0+1.0);
+        this.kübaraLäbimõõt = (int) Math.round(Math.random()*14.0+1.0);
         this.väärtus = väärtus;
     }
 
@@ -33,11 +33,14 @@ abstract class Seen implements Comparable<Seen> {
     public void setNimi(String nimi) {
         this.nimi = nimi;
     }
-    public void setKübaraLäbimõõt(double kübaraLäbimõõt) {
+    public void setKübaraLäbimõõt(int kübaraLäbimõõt) {
         this.kübaraLäbimõõt = kübaraLäbimõõt;
     }
-    public void setPikkus(double pikkus) {
+    public void setPikkus(int pikkus) {
         this.pikkus = pikkus;
+    }
+    public void setVäärtus(double väärtus) {
+        this.väärtus = väärtus;
     }
 
     //Võrdlemine
@@ -45,13 +48,7 @@ abstract class Seen implements Comparable<Seen> {
     @Override
     public int compareTo(Seen o) {
 
-        if(väärtus < o.väärtus){
-            return 1 /*+ this.getNimi().compareTo(o.getNimi())*/;
-        }else if(väärtus > o.väärtus){
-            return -1 /*this.getNimi().compareTo(o.getNimi()) - 1*/;
-        }else{
-            return 0 /*this.getNimi().compareTo(o.getNimi())*/;
-        }
+        return Double.compare(o.väärtus, this.väärtus);
     }
 
     //toString meetod
@@ -59,8 +56,8 @@ abstract class Seen implements Comparable<Seen> {
     @Override
     public String toString() {
         return "See " + this.nimi + " on " + this.pikkus + "cm pikk " +
-                "ning " + this.kübaraLäbimõõt + "cm suuruse kübaraga." +
-                "Selle seene väärtus on " + this.väärtus + " münti. ";
+                "ning " + this.kübaraLäbimõõt + "cm suuruse kübaraga. " +
+                "Selle seene väärtus on " + this.väärtus + " münti.";
     }
 }
 

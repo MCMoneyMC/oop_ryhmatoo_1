@@ -1,30 +1,24 @@
 public class Söögiseen extends Seen {
 
-    private String vajabKupatamist;
+    private boolean vajabKupatamist;
     private boolean onUssitanud;
 
     //Konstruktor
-    public Söögiseen(String nimi, double pikkus_cm, double kübaraLäbimõõt_cm, double väärtus, String vajabKupatamist, boolean onUssitanud) {
-        super(nimi, pikkus_cm, kübaraLäbimõõt_cm,väärtus);
+    public Söögiseen(String nimi, double väärtus, boolean vajabKupatamist) {
+        super(nimi, väärtus);
         this.vajabKupatamist = vajabKupatamist;
-        this.onUssitanud = onUssitanud;
     }
 
     //Get-id
     public boolean kasVajabKupatamist() {
-        if (vajabKupatamist.equals("ei pea kupatama")){
-            return false;
-        }
-        return true;
+        return vajabKupatamist;
     }
-
-    //randoomselt valitakse, kas see on ussitanud või mitte
     public boolean kasOnUssitanud(){
-        return Math.random() < 0.3;
+        return this.onUssitanud;
     }
 
     //Set-id
-    public void setVajabKupatamist(String vajabKupatamist) {
+    public void setVajabKupatamist(boolean vajabKupatamist) {
         this.vajabKupatamist = vajabKupatamist;
     }
     public void setOnUssitanud(boolean onUssitanud) {
