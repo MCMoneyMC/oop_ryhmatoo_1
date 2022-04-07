@@ -100,7 +100,7 @@ public class Peaklass {
         Seen[] seened;
 
         while (otsus != 0) {
-            seened = looUuedSeened(seenteInfo);
+            seened = looUuedSeened(mürgiseenteInfo, söögiseenteInfo);
             //System.out.println(Arrays.toString(seened));
             System.out.println("Seenelisel on ees kolm seent, vali neist üks, " +
                     "kirjutades 1, 2 või 3, ja liikuge edasi. \n" +
