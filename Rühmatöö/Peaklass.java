@@ -22,11 +22,7 @@ public class Peaklass {
     }
 
     //Meetod, kus genereeritakse 3 uut seent
-    public static Seen[] looUuedSeened(List<String[]>[] inception){
-
-        //Pakime meie massiivi lahti kasutatavateks listideks
-        List<String[]> kõikMürgiseened = inception[0];
-        List<String[]> kõikSöögiseened = inception[1];
+    public static Seen[] looUuedSeened(List<String[]> kõikMürgiseened, List<String[]> kõikSöögiseened){
 
         //Loome 3 uut seent
         Seen[] out = new Seen[3];
@@ -69,7 +65,7 @@ public class Peaklass {
         // loeme info failist sisse
         List<String[]> söögiseenteInfo = seenteInfo("soogiseened.txt");
         List<String[]> mürgiseenteInfo = seenteInfo("murgiseened.txt");
-        List<String[]>[] seenteInfo = new List[]{mürgiseenteInfo, söögiseenteInfo};
+     
 
         //Samuti moodustan tühja sõne, mis saab olema seenelise nimi.
         // Algul on ta tühi, et saaks alustada nime küsimise tsükkel,
