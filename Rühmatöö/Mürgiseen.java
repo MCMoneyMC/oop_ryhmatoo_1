@@ -1,8 +1,9 @@
 public class Mürgiseen extends Seen {
 
     //Konstruktor
-    public Mürgiseen(String nimi, double pikkus_cm, double kübaraLäbimõõt_cm) {
-        super(nimi, pikkus_cm, kübaraLäbimõõt_cm);
+    public Mürgiseen(String nimi, double väärtus) {
+        super(nimi, väärtus);
+
     }
 
     //Korjamise otsuse tegemise meetod
@@ -24,3 +25,4 @@ public class Mürgiseen extends Seen {
         return super.toString() + " Tegu on mürgiseenega.";
     }
 }
+

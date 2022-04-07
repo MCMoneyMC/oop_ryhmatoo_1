@@ -1,0 +1,3 @@
+Sirmik;peab;1.0
+Pilvik;ei pea;2.0
+Kukeseen;ei pea;3.0
